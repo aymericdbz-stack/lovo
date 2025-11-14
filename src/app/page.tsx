@@ -1,10 +1,12 @@
+import type { ReactElement } from "react";
+
 type IconProps = {
   className?: string;
 };
 
 type SidebarItem = {
   label: string;
-  icon: (props: IconProps) => JSX.Element;
+  icon: (props: IconProps) => ReactElement;
   active?: boolean;
 };
 
