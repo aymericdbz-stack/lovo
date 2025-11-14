@@ -153,8 +153,8 @@ const conversationEvents: ConversationEvent[] = [
     type: "message",
     payload: {
       id: 10,
-      author: "partner",
-      text: "Do you want to go to the cinema tonight?",
+      author: "user",
+      text: "Tu veux aller au cinéma ce soir ?",
       time: "14:23",
     },
   },
@@ -162,8 +162,8 @@ const conversationEvents: ConversationEvent[] = [
     type: "message",
     payload: {
       id: 11,
-      author: "user",
-      text: "Yes sure, which film ?",
+      author: "partner",
+      text: "Oui carrément, quel film ?",
       time: "14:23",
     },
   },
@@ -171,8 +171,17 @@ const conversationEvents: ConversationEvent[] = [
     type: "message",
     payload: {
       id: 12,
-      author: "partner",
+      author: "user",
       text: "Chien 51",
+      time: "14:24",
+    },
+  },
+    {
+    type: "message",
+    payload: {
+      id: 12,
+      author: "partner",
+      text: "Yes je suis chaud",
       time: "14:24",
     },
   },
