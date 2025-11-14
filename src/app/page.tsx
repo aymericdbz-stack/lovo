@@ -140,12 +140,6 @@ const chatMessages: Message[] = [
     text: "déjà ma boss me saoule, on a un point demain.\nEt en plus, je croyais qu’on dinait ensemble ce soir",
     time: "14:22",
   },
-  {
-    id: 10,
-    author: "user",
-    text: "ah zut pour ta boss. Tu me raconteras.\nDeso bb j’essaye de pas rentrer trop tard.",
-    time: "14:22",
-  },
 ];
 
 export default function Home() {
