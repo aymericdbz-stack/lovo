@@ -197,8 +197,26 @@ export default function Home() {
     setScriptIndex((prev) => prev + 1);
   };
 
-  const handleShortcutClick = () => {
-    console.log("TODO: connect webhook to book movie night for Chien 51");
+  const handleShortcutClick = async () => {
+    try {
+      await fetch(
+        "http://localhost:5678/webhook-test/a2335656-0c55-4f6f-8b00-079b37bbfc1a",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            action: "book_movie",
+            title: "Chien 51",
+            requestedBy: userName,
+            partner: partnerName,
+          }),
+        }
+      );
+    } catch (error) {
+      console.error("Webhook request failed", error);
+    }
   };
 
   const simulateDisabled = scriptIndex >= conversationEvents.length;
