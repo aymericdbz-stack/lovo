@@ -183,6 +183,7 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [scriptIndex, setScriptIndex] = useState(0);
   const [shortcutVisible, setShortcutVisible] = useState(false);
+  const [confirmation, setConfirmation] = useState<string | null>(null);
 
   const handleSimulatedMessage = () => {
     if (scriptIndex >= conversationEvents.length) {
@@ -213,6 +214,9 @@ export default function Home() {
             partner: partnerName,
           }),
         }
+      );
+      setConfirmation(
+        "Check your email address : two seats have been booked tonight for the movie CHIEN 51"
       );
     } catch (error) {
       console.error("Webhook request failed", error);
@@ -413,6 +417,13 @@ export default function Home() {
           </footer>
         </section>
       </div>
+      {confirmation && (
+        <div className="pointer-events-none fixed inset-0 z-50 flex items-end justify-center bg-transparent">
+          <div className="mb-8 w-full max-w-sm rounded-2xl bg-white/95 px-6 py-4 text-center text-sm font-semibold text-[#0b141a] shadow-2xl">
+            {confirmation}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
