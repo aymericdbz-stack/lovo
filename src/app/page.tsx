@@ -1,4 +1,6 @@
-import type { ReactElement } from "react";
+'use client';
+
+import { useState, type ReactElement } from "react";
 
 type IconProps = {
   className?: string;
@@ -25,6 +27,10 @@ type Message = {
   text: string;
   time: string;
 };
+
+type ConversationEvent =
+  | { type: "message"; payload: Message }
+  | { type: "shortcut"; label: string };
 
 const partnerName = "Mon amour 🧡";
 const userName = "Moi";
@@ -100,7 +106,7 @@ const chats: ChatItem[] = [
   },
 ];
 
-const chatMessages: Message[] = [
+const initialMessages: Message[] = [
   {
     id: 1,
     author: "partner",
@@ -142,7 +148,61 @@ const chatMessages: Message[] = [
   },
 ];
 
+const conversationEvents: ConversationEvent[] = [
+  {
+    type: "message",
+    payload: {
+      id: 10,
+      author: "partner",
+      text: "Do you want to go to the cinema tonight?",
+      time: "14:23",
+    },
+  },
+  {
+    type: "message",
+    payload: {
+      id: 11,
+      author: "user",
+      text: "Yes sure, which film ?",
+      time: "14:23",
+    },
+  },
+  {
+    type: "message",
+    payload: {
+      id: 12,
+      author: "partner",
+      text: "Chien 51",
+      time: "14:24",
+    },
+  },
+  { type: "shortcut", label: "Book a movie night for Chien 51" },
+];
+
 export default function Home() {
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [scriptIndex, setScriptIndex] = useState(0);
+  const [shortcutVisible, setShortcutVisible] = useState(false);
+
+  const handleSimulatedMessage = () => {
+    if (scriptIndex >= conversationEvents.length) {
+      return;
+    }
+    const event = conversationEvents[scriptIndex];
+    if (event.type === "message") {
+      setMessages((prev) => [...prev, event.payload]);
+    } else {
+      setShortcutVisible(true);
+    }
+    setScriptIndex((prev) => prev + 1);
+  };
+
+  const handleShortcutClick = () => {
+    console.log("TODO: connect webhook to book movie night for Chien 51");
+  };
+
+  const simulateDisabled = scriptIndex >= conversationEvents.length;
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#0b141a] px-3 py-6 text-white">
       <div className="flex w-full max-w-[1180px] flex-col overflow-hidden rounded-[32px] border border-black/30 bg-[#101a24] shadow-[0_30px_120px_rgba(0,0,0,0.55)] lg:h-[760px] lg:flex-row">
@@ -266,10 +326,19 @@ export default function Home() {
                 <p className="text-sm text-[#8696a0]">en ligne</p>
               </div>
             </div>
-            <div className="flex items-center gap-5 text-[#aebac1]">
+            <div className="flex items-center gap-4 text-[#aebac1]">
               <SearchIcon className="h-5 w-5" />
               <PaperclipIcon className="h-5 w-5" />
               <DotsIcon className="h-5 w-5" />
+              <button
+                className={`rounded-full border border-white/20 px-4 py-1.5 text-xs font-semibold transition hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-60`}
+                onClick={handleSimulatedMessage}
+                disabled={simulateDisabled}
+              >
+                {simulateDisabled
+                  ? "Aucun nouveau message"
+                  : "Recevoir un message"}
+              </button>
             </div>
           </header>
           <div className="relative flex-1 overflow-hidden">
@@ -279,7 +348,7 @@ export default function Home() {
                 Aujourd’hui
               </div>
               <div className="flex flex-col gap-3">
-                {chatMessages.map((message) => (
+                {messages.map((message) => (
                   <div
                     key={message.id}
                     className={`flex ${
@@ -303,6 +372,16 @@ export default function Home() {
                     </div>
                   </div>
                 ))}
+                {shortcutVisible && (
+                  <div className="flex justify-center">
+                    <button
+                      onClick={handleShortcutClick}
+                      className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#25d366] px-5 py-2 text-sm font-semibold text-[#0b141a] shadow-lg hover:bg-[#1dc85a]"
+                    >
+                      Book a movie night for Chien 51
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
